@@ -1,4 +1,3 @@
-# Explainable-AI-for-Credit-Risk-Assessment
 # Explainable AI for Credit Risk Assessment
 
 A comparative machine learning study investigating the **reliability, reproducibility and fairness of Explainable AI (XAI) methods for credit risk assessment**.
