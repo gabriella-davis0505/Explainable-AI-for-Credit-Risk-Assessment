@@ -1,124 +1,143 @@
 # Explainable AI for Credit Risk Assessment
 
-A comparative machine learning study investigating the **reliability, reproducibility and fairness of Explainable AI (XAI) methods for credit risk assessment**.
+MSc Data Science dissertation project investigating the **reliability, reproducibility and fairness of Explainable AI (XAI) methods in credit risk assessment**.
 
-The project compares multiple predictive models and explanation techniques across two established credit risk datasets, with particular attention given to whether explanations remain consistent across modelling approaches, software frameworks and random initialisations.
+The project compares multiple machine learning models and explanation techniques across two established credit risk datasets, with particular attention to whether explanations remain consistent across models, software frameworks and repeated training runs.
+
+---
 
 ## Project Overview
 
-Machine learning models are increasingly used to support financial decision-making, including credit risk assessment. While complex models can provide strong predictive performance, understanding **why a model makes a prediction** is particularly important in high-stakes applications.
+Machine learning models are increasingly used in high-stakes applications such as credit risk assessment. While complex predictive models can provide strong performance, understanding **why a model produces a particular prediction** is also important.
 
-This project investigates how reliable commonly used Explainable AI methods are when applied to different credit risk models.
+This project investigates whether commonly used Explainable AI methods provide explanations that are:
 
-The analysis focuses on three areas:
+* consistent across explanation techniques;
+* reproducible across machine learning frameworks and random seeds; and
+* meaningful when considered alongside demographic fairness measures.
 
-1. **Agreement** – Do different XAI methods identify similar important features?
-2. **Reproducibility** – Are explanations stable when models are retrained using different random seeds and machine learning frameworks?
-3. **Fairness** – How do model explanations relate to demographic fairness measures?
+The analysis was conducted using the **Taiwan Default of Credit Card Clients** dataset and the **German Statlog Credit** dataset.
+
+---
 
 ## Research Questions
 
-The project investigates the following broad questions:
+The project focuses on three areas:
 
-* How consistently do different Explainable AI methods explain credit risk models?
-* How reproducible are neural network explanations across TensorFlow and PyTorch implementations?
-* What relationship exists between model explanations and demographic fairness?
+### RQ1 – Agreement
+
+To what extent do different Explainable AI methods agree when identifying the most important features used by credit risk models?
+
+### RQ2 – Reproducibility
+
+How reproducible are neural network feature attributions when equivalent models are implemented using TensorFlow and PyTorch and trained across multiple random seeds?
+
+### RQ3 – Fairness
+
+How do model predictions and feature attribution patterns relate to demographic fairness measures?
+
+---
 
 ## Datasets
 
-Two established credit risk datasets were used to assess whether findings generalised across datasets with different characteristics.
-
 ### Taiwan Default of Credit Card Clients
 
-Approximately **30,000 customer records** containing demographic information, credit limits, repayment history and previous payment behaviour.
+The Taiwan dataset contains approximately **30,000 observations** describing demographic characteristics, credit limits, repayment status, bill amounts and previous payment behaviour.
 
-**Target:** Whether a customer defaults on their credit payment.
+The prediction target identifies whether a customer defaults on their credit payment.
 
 ### German Statlog Credit
 
-A smaller dataset containing **1,000 credit applicants**, with financial, demographic and credit-related characteristics.
+The German Statlog Credit dataset contains **1,000 observations** describing the financial and demographic characteristics of credit applicants.
 
-**Target:** Credit risk classification.
+The target represents credit risk classification.
 
-The original datasets are not redistributed through this repository. Please refer to their respective source repositories for access.
+The datasets are accessed from the UCI Machine Learning Repository within the analysis notebooks.
+
+---
 
 ## Machine Learning Models
 
-Four model implementations were evaluated:
+Four predictive model implementations were evaluated:
 
 * **Logistic Regression**
 * **XGBoost**
 * **TensorFlow Feed-Forward Neural Network**
 * **PyTorch Feed-Forward Neural Network**
 
-The TensorFlow and PyTorch neural networks were designed as matched architectures to enable investigation of whether implementation framework affected model explanations.
+The TensorFlow and PyTorch neural networks use matched architectures to support comparison between machine learning frameworks.
+
+---
 
 ## Explainable AI Methods
 
-Three widely used explanation approaches were investigated:
+Three explanation techniques were investigated:
 
 ### SHAP
 
-SHapley Additive exPlanations estimate feature contributions using concepts derived from cooperative game theory.
+SHapley Additive exPlanations were used to estimate feature contributions and generate global feature importance rankings.
 
 ### LIME
 
-Local Interpretable Model-Agnostic Explanations approximate model behaviour around individual predictions using interpretable local surrogate models.
+Local Interpretable Model-Agnostic Explanations were used to generate local feature weights, which were aggregated to support comparison with the other explanation methods.
 
 ### Integrated Gradients
 
-Integrated Gradients is a gradient-based attribution method used to explain neural network predictions by measuring feature contributions relative to a baseline.
+Integrated Gradients was applied to the TensorFlow and PyTorch neural networks to calculate gradient-based feature attributions.
 
-## Evaluation
+---
 
-### Predictive Performance
+## Methodology
 
-Model discrimination was assessed using cross-validated **Area Under the Receiver Operating Characteristic Curve (ROC-AUC)**.
+The overall workflow consisted of:
 
-### Explanation Agreement
+**Data preparation → Model training → Predictive evaluation → Explainability analysis → Agreement testing → Reproducibility analysis → Fairness analysis**
 
-Agreement between feature importance rankings produced by different XAI methods was investigated using techniques including:
+Key elements of the methodology included:
 
-* Kendall's coefficient of concordance
-* Spearman rank correlation
+* preprocessing and encoding of credit risk variables;
+* class weighting to account for class imbalance;
+* five-fold cross-validation;
+* ROC-AUC evaluation;
+* matched TensorFlow and PyTorch neural network architectures;
+* SHAP, LIME and Integrated Gradients feature attribution;
+* repeated neural network training across 10 random seeds;
+* Kendall's coefficient of concordance;
+* Spearman rank correlation;
+* paired Wilcoxon signed-rank testing;
+* Bonferroni correction for multiple comparisons;
+* disparate impact analysis using the four-fifths rule; and
+* bootstrap confidence intervals.
 
-### Reproducibility
+Categorical feature attributions were aggregated back to their original parent variables before ranking so that explanation methods could be compared using a common feature representation.
 
-The neural network experiments were repeated across **10 random seeds**.
-
-Attribution results from matched TensorFlow and PyTorch models were compared using:
-
-* Paired Wilcoxon signed-rank tests
-* Bonferroni correction for multiple comparisons
-
-### Fairness
-
-Demographic fairness was investigated using:
-
-* Disparate impact
-* Four-fifths rule
-* Bootstrap confidence intervals
-
-This allowed model behaviour and feature attribution results to be considered alongside group-level fairness measures.
+---
 
 ## Key Findings
 
-The experiments showed that explanation consistency depends on the combination of **dataset, predictive model and XAI technique**.
+The analysis demonstrated that the reliability of an explanation depends on the combination of **dataset, predictive model and XAI method**.
 
-Across the experiments:
+Key findings included:
 
-* XAI methods showed moderate to strong levels of agreement in many model and dataset combinations.
-* Explanation rankings were not perfectly interchangeable between XAI techniques.
-* Matched TensorFlow and PyTorch neural networks produced broadly comparable attribution patterns, although small differences were observed.
-* Repeating neural network experiments across multiple random seeds demonstrated the importance of considering attribution stability rather than relying on a single model run.
-* Fairness analysis provided an additional perspective on how model predictions and explanations interact with demographic characteristics.
+* agreement between explanation methods ranged from moderate to strong across the experiments;
+* different XAI techniques did not always produce identical feature importance rankings;
+* matched TensorFlow and PyTorch neural networks generally produced similar attribution patterns;
+* small differences between neural network explanations were observed across frameworks and repeated training runs;
+* the reproducibility analysis demonstrated the importance of assessing XAI methods across multiple seeds rather than relying on a single model execution; and
+* fairness analysis provided an additional perspective for assessing model behaviour across demographic groups.
 
-These findings highlight the importance of evaluating the **reliability of explanations themselves**, rather than assuming that the output of an XAI method is automatically stable or reproducible.
+Overall, the project demonstrates that Explainable AI outputs should themselves be evaluated for **agreement, reproducibility and stability**, rather than automatically being treated as definitive explanations of model behaviour.
+
+---
 
 ## Repository Structure
 
 ```text
-.
+explainable-ai-credit-risk/
+│
+├── README.md
+├── .gitignore
+│
 ├── notebooks/
 │   ├── Dissertation_Taiwan.ipynb
 │   ├── Dissertation_German.ipynb
@@ -127,83 +146,138 @@ These findings highlight the importance of evaluating the **reliability of expla
 ├── r/
 │   └── Statistical_Analysis_and_Figures.Rmd
 │
-├── data/
-│   ├── german_cv_auc.csv
-│   ├── german_rq2_shap.csv
-│   ├── german_rq2_training.csv
-│   ├── german_test_predictions.csv
-│   ├── german_xai_importance.csv
-│   ├── taiwan_cv_auc.csv
-│   ├── taiwan_rq2_shap.csv
-│   ├── taiwan_rq2_training.csv
-│   ├── taiwan_test_predictions.csv
-│   └── taiwan_xai_importance.csv
-│
-└── README.md
+└── data/
+    ├── taiwan_cv_auc.csv
+    ├── taiwan_xai_importance.csv
+    ├── taiwan_rq2_shap.csv
+    ├── taiwan_rq2_training.csv
+    ├── taiwan_test_predictions.csv
+    ├── german_cv_auc.csv
+    ├── german_xai_importance.csv
+    ├── german_rq2_shap.csv
+    ├── german_rq2_training.csv
+    └── german_test_predictions.csv
 ```
 
-The CSV files contained in `data/` are generated analysis outputs used for the statistical analysis and visualisation stages of the project rather than copies of the original credit datasets.
+---
+
+## Repository Contents
+
+### `notebooks/`
+
+Contains the Python notebooks used for the main machine learning experiments.
+
+**`Dissertation_Taiwan.ipynb`**
+
+Contains the Taiwan credit risk analysis, including:
+
+* preprocessing;
+* model training;
+* predictive evaluation;
+* SHAP;
+* LIME;
+* Integrated Gradients;
+* explanation agreement analysis;
+* reproducibility experiments; and
+* fairness analysis.
+
+**`Dissertation_German.ipynb`**
+
+Contains the equivalent analysis for the German Statlog Credit dataset.
+
+**`Experimental_Design_Figure.ipynb`**
+
+Contains code used to generate the experimental design visualisation.
+
+### `r/`
+
+**`Statistical_Analysis_and_Figures.Rmd`**
+
+Contains the statistical analysis and visualisation performed in R using the outputs generated by the Python notebooks.
+
+### `data/`
+
+Contains generated experimental outputs used for subsequent statistical analysis and visualisation.
+
+These include:
+
+* cross-validation AUC results;
+* XAI feature importance results;
+* multi-seed SHAP attribution results;
+* neural network training diagnostics; and
+* test-set predictions used for fairness analysis.
+
+---
 
 ## Technologies
 
-### Python
+### Programming Languages
 
 * Python
-* Pandas
-* NumPy
+* R
+
+### Machine Learning
+
 * Scikit-learn
 * XGBoost
 * TensorFlow
 * PyTorch
+
+### Explainable AI
+
 * SHAP
 * LIME
-* Matplotlib
-* Seaborn
+* Captum
+* Integrated Gradients
 
-### R
+### Data Analysis
 
+* Pandas
+* NumPy
+* SciPy
 * R
-* R Markdown
-* Statistical hypothesis testing
-* Data visualisation
 
-### Methods
+### Statistical Analysis
 
-* Binary classification
-* Cross-validation
-* Neural networks
-* Explainable AI
-* Feature attribution
-* Statistical hypothesis testing
+* Kendall's W
+* Spearman rank correlation
+* Wilcoxon signed-rank testing
+* Bonferroni correction
 * Bootstrap confidence intervals
-* Model reproducibility analysis
-* Algorithmic fairness analysis
+* Disparate impact analysis
 
-## Workflow
+---
 
-The project followed an experimental workflow consisting of:
+## Skills Demonstrated
 
-**Data preprocessing → Model training → Predictive evaluation → XAI generation → Explanation comparison → Reproducibility testing → Fairness analysis**
+This project demonstrates experience in:
 
-Separate experiments were performed on the Taiwan and German credit datasets before results were combined for statistical analysis and interpretation.
+* end-to-end machine learning workflows;
+* binary classification;
+* data preprocessing;
+* model evaluation;
+* neural network development;
+* TensorFlow and PyTorch;
+* Explainable AI;
+* model interpretability;
+* reproducibility testing;
+* statistical hypothesis testing;
+* algorithmic fairness;
+* experimental design;
+* Python and R integration; and
+* communicating technical results.
 
-## Why This Project Matters
+---
 
-Explainability is increasingly important when machine learning is used in high-stakes decision-making.
+## Academic Context
 
-However, producing an explanation is not sufficient by itself. Explanations should also be assessed for **agreement, stability and reproducibility**.
+This repository contains work completed as part of my **MSc Data Science dissertation** titled:
 
-This project demonstrates a framework for evaluating not only predictive model performance, but also the reliability of the explanations used to interpret those predictions.
+**Explainable AI for Credit Risk Assessment**
 
-## Future Development
+The repository has been included as part of my data science portfolio to demonstrate the technical implementation, experimental methodology and analytical skills developed during the project.
 
-Potential extensions include:
-
-* evaluating additional credit risk datasets;
-* comparing further XAI techniques;
-* investigating additional fairness metrics;
-* assessing explanation stability under distribution shift;
-* developing an interactive interface for exploring local and global model explanations.
+---
 
 ## Author
 
@@ -212,7 +286,3 @@ Potential extensions include:
 MSc Data Science
 
 GitHub: `gabriella-davis0505`
-
----
-
-*This repository contains a portfolio version of work completed as part of an MSc Data Science project. The repository focuses on the technical implementation, experimental methodology and results.*
