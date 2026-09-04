@@ -111,6 +111,62 @@ Key elements of the methodology included:
 
 Categorical feature attributions were aggregated back to their original parent variables before ranking so that explanation methods could be compared using a common feature representation.
 
+### Experimental Design
+
+The experimental design links the three research questions to the predictive modelling, explainability, reproducibility and fairness analyses.
+
+![Experimental design](figures/fig_experimental_design.png)
+
+---
+
+## Results and Visualisations
+
+### Model Performance
+
+Predictive performance was assessed using five-fold cross-validated ROC-AUC across the four model implementations.
+
+![Cross-validated ROC-AUC](figures/fig_cv_auc.png)
+
+---
+
+### RQ1 – Agreement Between Explainability Methods
+
+Agreement between explanation methods was assessed using feature importance rankings and rank-based statistical measures.
+
+![XAI concordance heatmap](figures/fig_concordance_heatmap.png)
+
+The analysis also examined the features identified as most important across the different modelling and explanation approaches.
+
+![Top features](figures/fig_top_features.png)
+
+---
+
+### RQ2 – TensorFlow and PyTorch Reproducibility
+
+Matched neural networks were implemented in TensorFlow and PyTorch and repeatedly trained across multiple random seeds.
+
+The comparison investigated whether using different deep learning frameworks affected the resulting feature attribution patterns.
+
+#### Taiwan Dataset
+
+![TensorFlow and PyTorch comparison for the Taiwan dataset](figures/fig_framework_taiwan.png)
+
+#### German Dataset
+
+![TensorFlow and PyTorch comparison for the German dataset](figures/fig_framework_german.png)
+
+---
+
+### RQ3 – Fairness Analysis
+
+Demographic fairness was investigated using disparate impact ratios and the four-fifths rule, with bootstrap confidence intervals used to quantify uncertainty.
+
+![Fairness ratios](figures/fig_fairness_ratios.png)
+
+Age-related attribution patterns were also examined as part of the fairness analysis.
+
+![Age gradient analysis](figures/fig_age_gradient.png)
+
 ---
 
 ## Key Findings
@@ -146,17 +202,27 @@ explainable-ai-credit-risk/
 ├── r/
 │   └── Statistical_Analysis_and_Figures.Rmd
 │
-└── data/
-    ├── taiwan_cv_auc.csv
-    ├── taiwan_xai_importance.csv
-    ├── taiwan_rq2_shap.csv
-    ├── taiwan_rq2_training.csv
-    ├── taiwan_test_predictions.csv
-    ├── german_cv_auc.csv
-    ├── german_xai_importance.csv
-    ├── german_rq2_shap.csv
-    ├── german_rq2_training.csv
-    └── german_test_predictions.csv
+├── data/
+│   ├── taiwan_cv_auc.csv
+│   ├── taiwan_xai_importance.csv
+│   ├── taiwan_rq2_shap.csv
+│   ├── taiwan_rq2_training.csv
+│   ├── taiwan_test_predictions.csv
+│   ├── german_cv_auc.csv
+│   ├── german_xai_importance.csv
+│   ├── german_rq2_shap.csv
+│   ├── german_rq2_training.csv
+│   └── german_test_predictions.csv
+│
+└── figures/
+    ├── fig_age_gradient.png
+    ├── fig_concordance_heatmap.png
+    ├── fig_cv_auc.png
+    ├── fig_experimental_design.png
+    ├── fig_fairness_ratios.png
+    ├── fig_framework_german.png
+    ├── fig_framework_taiwan.png
+    └── fig_top_features.png
 ```
 
 ---
@@ -206,6 +272,10 @@ These include:
 * multi-seed SHAP attribution results;
 * neural network training diagnostics; and
 * test-set predictions used for fairness analysis.
+
+### `figures/`
+
+Contains the main visualisations generated from the modelling, explainability, reproducibility and fairness analyses.
 
 ---
 
